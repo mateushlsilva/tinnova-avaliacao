@@ -68,7 +68,11 @@ public class VeiculosService {
             veiculo.setId(id);
             veiculo.setUpdated(LocalDateTime.now());
             return veiculosRep.save(veiculo);
-        
+    }
 
+    public void deletarPorId(Long id){
+        veiculosRep.findById(id) 
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Veículo não encontrado!"));
+        veiculosRep.deleteById(id);
     }
 }

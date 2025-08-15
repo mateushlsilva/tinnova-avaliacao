@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,6 +73,17 @@ public class VeiculosController {
     public ResponseEntity<Veiculos> atualizarUsuario(@PathVariable long id, @RequestBody Veiculos veiculo) {
         Veiculos atualizadoVeiculo = veiculosService.atualizarVeiculo(veiculo, id);
         return ResponseEntity.ok().body(atualizadoVeiculo);
+    }
+
+    @Operation(summary = "Excluir um veículo por ID", description = "Exclui um veículo por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Veículo excluído com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Veículo não encontrado")
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarUsuario(@PathVariable long id) {
+        veiculosService.deletarPorId(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
