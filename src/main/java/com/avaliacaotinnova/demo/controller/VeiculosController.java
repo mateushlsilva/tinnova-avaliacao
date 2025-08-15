@@ -1,6 +1,7 @@
 package com.avaliacaotinnova.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -82,7 +83,7 @@ public class VeiculosController {
             @ApiResponse(responseCode = "400", description = "Erro ao atualizar o veículo")
     })
     @PatchMapping("/{id}")
-    public ResponseEntity<Veiculos> atualizarAlgunsCamposVeiculo(@PathVariable long id, @RequestBody Veiculos veiculo) {
+    public ResponseEntity<Veiculos> atualizarAlgunsCamposVeiculo(@PathVariable long id, @RequestBody Map<String, Object> veiculo) {
         Veiculos atualizadoVeiculo = veiculosService.atualizarVeiculoPatch(veiculo, id);
         return ResponseEntity.ok().body(atualizadoVeiculo);
     }

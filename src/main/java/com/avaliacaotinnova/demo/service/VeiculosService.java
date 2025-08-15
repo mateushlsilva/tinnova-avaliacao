@@ -2,6 +2,7 @@ package com.avaliacaotinnova.demo.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -70,27 +71,25 @@ public class VeiculosService {
             veiculo.setUpdated(LocalDateTime.now());
             return veiculosRep.save(veiculo);
     }
-    public <T> void atualizaSeNaoNulo(T valor, Consumer<T> setter) {
-        if (valor != null) {
-            setter.accept(valor);
-        }
+    public void atualizaSeNaoNulo(Map<String, Object> valores, Veiculos veiculo) {
+        valores.forEach((chave, valor) -> {
+            switch (chave) {
+                case "marca" -> veiculo.setMarca((String) valor);
+                case "descricao" -> veiculo.setDescricao((String) valor);
+                case "veiculo" -> veiculo.setVeiculo((String) valor);
+                case "ano" -> veiculo.setAno((Integer) valor);
+                case "vendido" -> veiculo.setVendido((Boolean) valor);
+            }
+        });
     }
-    public Veiculos atualizarVeiculoPatch(Veiculos veiculo, Long id) {
+    public Veiculos atualizarVeiculoPatch(Map<String, Object> veiculo, Long id) {
         
         Veiculos veiculoOp = veiculosRep.findById(id) 
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Veículo não encontrado!"));
-        
-        atualizaSeNaoNulo(veiculo.getMarca(), veiculoOp::setMarca);
-        atualizaSeNaoNulo(veiculo.getDescricao(), veiculoOp::setDescricao);
-        atualizaSeNaoNulo(veiculo.getVeiculo(), veiculoOp::setVeiculo);
-        atualizaSeNaoNulo(veiculo.getAno(), veiculoOp::setAno);
-        atualizaSeNaoNulo(veiculo.getVendido(), veiculoOp::setVendido);
-      
-           
-        veiculo.setCreated(veiculoOp.getCreated());
-        veiculo.setId(id);
-        veiculo.setUpdated(LocalDateTime.now());
-        return veiculosRep.save(veiculo);
+    
+        veiculoOp.setUpdated(LocalDateTime.now());
+        atualizaSeNaoNulo(veiculo, veiculoOp);
+        return veiculosRep.save(veiculoOp);
     }
 
     public void deletarPorId(Long id){
