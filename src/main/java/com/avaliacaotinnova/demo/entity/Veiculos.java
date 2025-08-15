@@ -21,7 +21,7 @@ public class Veiculos {
     private Long id;
 
     @Column(name = "veiculo", nullable = false)
-    private String nome_usuario;
+    private String veiculo;
 
     @Column(name = "marca", nullable = false)
     private String marca;
@@ -51,13 +51,7 @@ public class Veiculos {
         this.id = id;
     }
 
-    public String getNome_usuario() {
-        return nome_usuario;
-    }
-
-    public void setNome_usuario(String nome_usuario) {
-        this.nome_usuario = nome_usuario;
-    }
+    
 
     public String getMarca() {
         return marca;
@@ -105,6 +99,14 @@ public class Veiculos {
 
     public void setUpdated(LocalDateTime updated) {
         this.updated = updated;
+    }
+
+    public String getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(String veiculo) {
+        this.veiculo = veiculo;
     }
 
     
