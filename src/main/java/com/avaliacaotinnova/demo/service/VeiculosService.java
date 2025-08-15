@@ -1,5 +1,8 @@
 package com.avaliacaotinnova.demo.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,15 @@ public class VeiculosService {
         ){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados inválidos!");
         }
+        if(veiculo.getCreated() == null || veiculo.getUpdated() == null){
+            veiculo.setCreated(LocalDateTime.now());
+            veiculo.setUpdated(LocalDateTime.now());
+        }
         return veiculosRep.save(veiculo) ;
+    }
+
+    public List<Veiculos> buscarTodosVeiculos(){
+        List<Veiculos> veiculos = veiculosRep.findAll();
+        return veiculos;
     }
 }
