@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.avaliacaotinnova.demo.entity.Veiculos;
@@ -24,6 +25,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 
 @RestController
@@ -45,15 +47,15 @@ public class VeiculosController {
         return ResponseEntity.status(HttpStatus.CREATED).body(novoVeiculo);
     }
 
-    @Operation(summary = "Buscar todos os veículos", description = "Retorna todos os veículos")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna todos os veículos"),
-            @ApiResponse(responseCode = "400", description = "Não há veículos cadastrados")
-    })
-    @GetMapping
-    public List<Veiculos> buscarVeiculos(){
-        return veiculosService.buscarTodosVeiculos();
-    }
+    // @Operation(summary = "Buscar todos os veículos", description = "Retorna todos os veículos")
+    // @ApiResponses(value = {
+    //         @ApiResponse(responseCode = "200", description = "Retorna todos os veículos"),
+    //         @ApiResponse(responseCode = "400", description = "Não há veículos cadastrados")
+    // })
+    // @GetMapping
+    // public List<Veiculos> buscarVeiculos(){
+    //     return veiculosService.buscarTodosVeiculos();
+    // }
 
     @Operation(summary = "Buscar o veículo pelo id", description = "Retorna o veículo")
     @ApiResponses(value = {
@@ -65,6 +67,18 @@ public class VeiculosController {
         return veiculosService.buscarPorId(id);
     }
 
+    @Operation(summary = "Buscar o veículo pela marca, ano, cor", description = "Retorna o veículo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna o veículo"),
+            @ApiResponse(responseCode = "400", description = "Não há veículo cadastrado")
+    })
+    @GetMapping
+    public List<Veiculos> buscarVeiculoPeloParam(@RequestParam(required = false) String marca,
+        @RequestParam(required = false) Integer ano,
+        @RequestParam(required = false) String cor) {
+        return veiculosService.buscarPorParam(marca, ano, cor);
+    }
+
   
     @Operation(summary = "Atualizar um veículo existente", description = "Atualiza um veículo existente")
     @ApiResponses(value = {
@@ -72,7 +86,7 @@ public class VeiculosController {
             @ApiResponse(responseCode = "400", description = "Erro ao atualizar o veículo")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Veiculos> atualizarVeiculo(@PathVariable long id, @RequestBody Veiculos veiculo) {
+    public ResponseEntity<Veiculos> atualizarVeiculo(@PathVariable long id,@RequestBody Veiculos veiculo) {
         Veiculos atualizadoVeiculo = veiculosService.atualizarVeiculo(veiculo, id);
         return ResponseEntity.ok().body(atualizadoVeiculo);
     }
@@ -83,7 +97,7 @@ public class VeiculosController {
             @ApiResponse(responseCode = "400", description = "Erro ao atualizar o veículo")
     })
     @PatchMapping("/{id}")
-    public ResponseEntity<Veiculos> atualizarAlgunsCamposVeiculo(@PathVariable long id, @RequestBody Map<String, Object> veiculo) {
+    public ResponseEntity<Veiculos> atualizarAlgunsCamposVeiculo(@PathVariable long id,@RequestBody Map<String, Object> veiculo) {
         Veiculos atualizadoVeiculo = veiculosService.atualizarVeiculoPatch(veiculo, id);
         return ResponseEntity.ok().body(atualizadoVeiculo);
     }

@@ -2,7 +2,6 @@ package com.avaliacaotinnova.demo.entity;
 
 
 import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
@@ -11,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 
 @Entity
 @Table(name = "veiculos")
@@ -22,9 +22,12 @@ public class Veiculos {
 
     @Column(name = "veiculo", nullable = false)
     private String veiculo;
-
+    
     @Column(name = "marca", nullable = false)
     private String marca;
+
+    @Column(name = "cor", nullable = false)
+    private String cor;
 
     @Column(name = "ano")
     private Integer ano;
@@ -51,7 +54,13 @@ public class Veiculos {
         this.id = id;
     }
 
-    
+    public String getCor() {
+        return cor;
+    }
+
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
 
     public String getMarca() {
         return marca;
@@ -60,6 +69,7 @@ public class Veiculos {
     public void setMarca(String marca) {
         this.marca = marca;
     }
+
 
     public Integer getAno() {
         return ano;
