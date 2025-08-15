@@ -2,6 +2,7 @@ package com.avaliacaotinnova.demo.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,5 +40,13 @@ public class VeiculosService {
     public List<Veiculos> buscarTodosVeiculos(){
         List<Veiculos> veiculos = veiculosRep.findAll();
         return veiculos;
+    }
+
+    public Veiculos buscarPorId(Long id){
+        Optional<Veiculos> veiculo = veiculosRep.findById(id);
+        if(veiculo.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Veículo não encontrado!");
+        }
+        return veiculo.get();
     }
 }
