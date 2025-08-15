@@ -12,7 +12,7 @@ public interface VeiculosRepository extends JpaRepository<Veiculos, Long> {
 
     @Query("SELECT v FROM Veiculos v " +
             "WHERE (:marca IS NULL OR v.marca = :marca) " +
-            "AND (:ano IS NULL OR v.ano = :ano) " +
+            "AND (:decadaStart IS NULL OR v.ano BETWEEN :decadaStart AND :decadaEnd)" +
             "AND (:cor IS NULL OR v.cor = :cor)")
-    List<Veiculos> findByFiltros(@Param("marca") String marca, @Param("ano") Integer ano, @Param("cor") String cor);
+    List<Veiculos> findByFiltros(@Param("marca") String marca, @Param("decadaStart") Integer decadaStart, @Param("decadaEnd") Integer decadaEnd, @Param("cor") String cor);
 }

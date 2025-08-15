@@ -61,7 +61,14 @@ public class VeiculosService {
 
 
     public List<Veiculos> buscarPorParam(String marca, Integer ano, String cor){
-        return veiculosRep.findByFiltros(marca, ano, cor);
+        Integer decadaStart = null;
+        Integer decadaEnd = null;
+
+        if (ano != null) {
+            decadaStart = (ano / 10) * 10; 
+            decadaEnd = decadaStart + 9; 
+        }
+        return veiculosRep.findByFiltros(marca, decadaStart, decadaEnd, cor);
     }
 
     public Veiculos atualizarVeiculo(Veiculos veiculo, Long id) {

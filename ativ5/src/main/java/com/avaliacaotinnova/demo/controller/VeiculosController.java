@@ -22,6 +22,9 @@ import com.avaliacaotinnova.demo.entity.Veiculos;
 import com.avaliacaotinnova.demo.service.VeiculosService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,15 +50,15 @@ public class VeiculosController {
         return ResponseEntity.status(HttpStatus.CREATED).body(novoVeiculo);
     }
 
-    // @Operation(summary = "Buscar todos os veículos", description = "Retorna todos os veículos")
-    // @ApiResponses(value = {
-    //         @ApiResponse(responseCode = "200", description = "Retorna todos os veículos"),
-    //         @ApiResponse(responseCode = "400", description = "Não há veículos cadastrados")
-    // })
-    // @GetMapping
-    // public List<Veiculos> buscarVeiculos(){
-    //     return veiculosService.buscarTodosVeiculos();
-    // }
+    @Operation(summary = "Buscar todos os veículos", description = "Retorna todos os veículos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna todos os veículos"),
+            @ApiResponse(responseCode = "400", description = "Não há veículos cadastrados")
+    })
+    @GetMapping("/")
+    public List<Veiculos> buscarVeiculos(){
+        return veiculosService.buscarTodosVeiculos();
+    }
 
     @Operation(summary = "Buscar o veículo pelo id", description = "Retorna o veículo")
     @ApiResponses(value = {
@@ -91,7 +94,14 @@ public class VeiculosController {
         return ResponseEntity.ok().body(atualizadoVeiculo);
     }
 
-    @Operation(summary = "Atualizar alguns campos do veículo existente", description = "Atualiza alguns campos do veículo existente")
+    @Operation(summary = "Atualizar alguns campos do veículo existente", description = "Atualiza alguns campos do veículo existente", requestBody= @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(
+            schema = @Schema(implementation = Veiculos.class),
+            examples = @ExampleObject(
+                name = "Exemplo Veiculo",
+                summary = "Exemplo de atualização",
+                value = "{ \"marca\": \"Toyota\", \"ano\": 2020 }"
+            )
+        )))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Veículo atualizado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Erro ao atualizar o veículo")
