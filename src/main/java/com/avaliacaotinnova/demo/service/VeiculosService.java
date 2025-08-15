@@ -3,6 +3,7 @@ package com.avaliacaotinnova.demo.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,6 +69,28 @@ public class VeiculosService {
             veiculo.setId(id);
             veiculo.setUpdated(LocalDateTime.now());
             return veiculosRep.save(veiculo);
+    }
+    public <T> void atualizaSeNaoNulo(T valor, Consumer<T> setter) {
+        if (valor != null) {
+            setter.accept(valor);
+        }
+    }
+    public Veiculos atualizarVeiculoPatch(Veiculos veiculo, Long id) {
+        
+        Veiculos veiculoOp = veiculosRep.findById(id) 
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Veículo não encontrado!"));
+        
+        atualizaSeNaoNulo(veiculo.getMarca(), veiculoOp::setMarca);
+        atualizaSeNaoNulo(veiculo.getDescricao(), veiculoOp::setDescricao);
+        atualizaSeNaoNulo(veiculo.getVeiculo(), veiculoOp::setVeiculo);
+        atualizaSeNaoNulo(veiculo.getAno(), veiculoOp::setAno);
+        atualizaSeNaoNulo(veiculo.getVendido(), veiculoOp::setVendido);
+      
+           
+        veiculo.setCreated(veiculoOp.getCreated());
+        veiculo.setId(id);
+        veiculo.setUpdated(LocalDateTime.now());
+        return veiculosRep.save(veiculo);
     }
 
     public void deletarPorId(Long id){

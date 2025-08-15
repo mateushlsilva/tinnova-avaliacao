@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -70,10 +71,22 @@ public class VeiculosController {
             @ApiResponse(responseCode = "400", description = "Erro ao atualizar o veículo")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Veiculos> atualizarUsuario(@PathVariable long id, @RequestBody Veiculos veiculo) {
+    public ResponseEntity<Veiculos> atualizarVeiculo(@PathVariable long id, @RequestBody Veiculos veiculo) {
         Veiculos atualizadoVeiculo = veiculosService.atualizarVeiculo(veiculo, id);
         return ResponseEntity.ok().body(atualizadoVeiculo);
     }
+
+    @Operation(summary = "Atualizar alguns campos do veículo existente", description = "Atualiza alguns campos do veículo existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Veículo atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Erro ao atualizar o veículo")
+    })
+    @PatchMapping("/{id}")
+    public ResponseEntity<Veiculos> atualizarAlgunsCamposVeiculo(@PathVariable long id, @RequestBody Veiculos veiculo) {
+        Veiculos atualizadoVeiculo = veiculosService.atualizarVeiculoPatch(veiculo, id);
+        return ResponseEntity.ok().body(atualizadoVeiculo);
+    }
+
 
     @Operation(summary = "Excluir um veículo por ID", description = "Exclui um veículo por ID")
     @ApiResponses(value = {
