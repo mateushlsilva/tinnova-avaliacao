@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-tinnova
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: spring
+      MYSQL_USER: tinnova
+      MYSQL_PASSWORD: tinnova123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql-init:/docker-entrypoint-initdb.d
+
+  app:
+    build: .
+    container_name: spring-tinnova
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/spring?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: tinnova
+      SPRING_DATASOURCE_PASSWORD: tinnova123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none   
+      SPRING_JPA_SHOW_SQL: "true"
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql_data:
