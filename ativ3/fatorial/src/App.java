@@ -1,5 +1,3 @@
-package com.fatorial;
-
 public class App {
     public static long calcFatorial(int numero){
         if (numero <= 1) return 1;
